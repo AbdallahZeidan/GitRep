@@ -8,3 +8,7 @@ Third: git push origin master
 
 For more info regarding the cridential error:
 https://reactgo.com/github-password-authentication-removed/
+
+
+3- To update files in local computer inside the git repo directory:
+git pull
