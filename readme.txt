@@ -5,3 +5,6 @@ git remote set-url origin https://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@githu
 first: git add <file_name>
 second: git commit <commit_name> (EX: git commit -m "Simple Test")
 Third: git push origin master
+
+For more info regarding the cridential error:
+https://reactgo.com/github-password-authentication-removed/
