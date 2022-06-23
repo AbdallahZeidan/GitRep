@@ -41,6 +41,8 @@ def ParseEnvelopePlatform(x,device_id):
     List_4 = []
     List_5 = []
     RadioIdList = []
+    MIMO_BAND = []
+    print("Device ID: " + device_id)
     for envelope_line in x:
         if json_validator(envelope_line):
             loaded_envelope_line = json.loads(envelope_line)
@@ -51,13 +53,6 @@ def ParseEnvelopePlatform(x,device_id):
                 LIST_1.append(env_groupId)
                 LIST_2.append(env_WiFiDoctorAgentVersion)
                 List_3.append(env_WLANControllerVersion)
-
-                #print("\n"+"Device ID:",device_id)
-                #print("\n"+"### PLATFORM DATA ###"+"\n"+"=====================")
-                #print("groupId: ", env_groupId)
-                #print("WiFiDoctorAgentVersion: ", env_WiFiDoctorAgentVersion)
-                #print("WLANControllerVersion: ", env_WLANControllerVersion)
-                #print ("========================================================================================" , "\n")
                 
             if (loaded_envelope_line["type"] == "Interface"):
                 interface = loaded_envelope_line["data"]["ssid"]
@@ -66,17 +61,18 @@ def ParseEnvelopePlatform(x,device_id):
                     List_4.append(interface)
                     RadioIdList.append(RadioID)
 
-            #        print("\n"+"### INTERFACE DATA ###"+"\n"+"=====================")
-            #        print("Interface_ssid: ", interface)
-
             if (loaded_envelope_line["type"] == "Radio"):
                 MIMO_TX = loaded_envelope_line["data"]["capabilities"]["spatialStreamsTX"]
+                BAND = loaded_envelope_line["data"]["capabilities"]["bands"]
+                BAND_NSS = MIMO_TX , BAND
                 List_5.append(MIMO_TX)
+                MIMO_BAND.append(BAND_NSS)
 
 
     print("DEVICE INFO\n###########","\nGroup_ID --> ",LIST_1[-1] ,"\nWiFiDoctorAgentVersion --> ",LIST_2[-1], "\nWLANControllerVersion --> ", List_3[-1])
     print("\nSSID_1 --> ",List_4[-2], "|| RadioID:",RadioIdList[-2], "\nSSID_2 --> ", List_4[-1] , "|| RadioID:",RadioIdList[-1])
-    print("\nMIMO_NSS:",List_5)
+    #print("\nMIMO_NSS:",List_5)
+    print("\nMIMO BAND NSS --> ",  MIMO_BAND[-1],MIMO_BAND[-2],MIMO_BAND[-3])
         
     
 
