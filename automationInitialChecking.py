@@ -40,6 +40,7 @@ def ParseEnvelopePlatform(x,device_id):
     List_3 = []
     List_4 = []
     List_5 = []
+    RadioIdList = []
     for envelope_line in x:
         if json_validator(envelope_line):
             loaded_envelope_line = json.loads(envelope_line)
@@ -61,7 +62,10 @@ def ParseEnvelopePlatform(x,device_id):
             if (loaded_envelope_line["type"] == "Interface"):
                 interface = loaded_envelope_line["data"]["ssid"]
                 if (interface == "WFD-2G-S2" or interface == "WFD-5G-S2"):
+                    RadioID = loaded_envelope_line["data"]["interfaceId"]["radioId"]["id"]
                     List_4.append(interface)
+                    RadioIdList.append(RadioID)
+
             #        print("\n"+"### INTERFACE DATA ###"+"\n"+"=====================")
             #        print("Interface_ssid: ", interface)
 
@@ -71,8 +75,8 @@ def ParseEnvelopePlatform(x,device_id):
 
 
     print("DEVICE INFO\n###########","\nGroup_ID --> ",LIST_1[-1] ,"\nWiFiDoctorAgentVersion --> ",LIST_2[-1], "\nWLANControllerVersion --> ", List_3[-1])
-    print("SSID_1 --> ",List_4[-2], "\nSSID_2 --> ", List_4[-1])
-    print(List_5)
+    print("\nSSID_1 --> ",List_4[-2], "|| RadioID:",RadioIdList[-2], "\nSSID_2 --> ", List_4[-1] , "|| RadioID:",RadioIdList[-1])
+    print("\nMIMO_NSS:",List_5)
         
     
 
