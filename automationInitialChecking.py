@@ -38,6 +38,8 @@ def ParseEnvelopePlatform(x,device_id):
     LIST_1 = []
     LIST_2 = []
     List_3 = []
+    List_4 = []
+    List_5 = []
     for envelope_line in x:
         if json_validator(envelope_line):
             loaded_envelope_line = json.loads(envelope_line)
@@ -56,12 +58,21 @@ def ParseEnvelopePlatform(x,device_id):
                 #print("WLANControllerVersion: ", env_WLANControllerVersion)
                 #print ("========================================================================================" , "\n")
                 
-            #if (loaded_envelope_line["type"] == "Interface"):
-            #    interface = loaded_envelope_line["data"]["ssid"]
-            #    if (interface == "WFD-2G-S2" or interface == "WFD-5G-S2"):
+            if (loaded_envelope_line["type"] == "Interface"):
+                interface = loaded_envelope_line["data"]["ssid"]
+                if (interface == "WFD-2G-S2" or interface == "WFD-5G-S2"):
+                    List_4.append(interface)
             #        print("\n"+"### INTERFACE DATA ###"+"\n"+"=====================")
             #        print("Interface_ssid: ", interface)
-    print("DEVICE INFO\n###########","\nGroup_ID",LIST_1[-1] ,"\nWiFiDoctorAgentVersion",LIST_2[-1], "\nWLANControllerVersion", List_3[-1])
+
+            if (loaded_envelope_line["type"] == "Radio"):
+                MIMO_TX = loaded_envelope_line["data"]["capabilities"]["spatialStreamsTX"]
+                List_5.append(MIMO_TX)
+
+
+    print("DEVICE INFO\n###########","\nGroup_ID --> ",LIST_1[-1] ,"\nWiFiDoctorAgentVersion --> ",LIST_2[-1], "\nWLANControllerVersion --> ", List_3[-1])
+    print("SSID_1 --> ",List_4[-2], "\nSSID_2 --> ", List_4[-1])
+    print(List_5)
         
     
 
