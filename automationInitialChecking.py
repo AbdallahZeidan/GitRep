@@ -74,6 +74,7 @@ def ParseEnvelopePlatform(x,device_id):
     print ("\nSSID, RadioID -- >", SSID_RadioID_List[-1],SSID_RadioID_List[-2],SSID_RadioID_List[-3])
     print("\nMIMO NSS, BAND --> ",  MIMO_BAND[-1],MIMO_BAND[-2],MIMO_BAND[-3])
     
+    print(len(SSID_RadioID_List))
         
     
 
