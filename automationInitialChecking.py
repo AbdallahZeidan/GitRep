@@ -35,14 +35,16 @@ def json_validator(data):
 
 
 def ParseEnvelopePlatform(x,device_id):
-    LIST_1 = []
-    LIST_2 = []
-    List_3 = []
-    List_4 = []
-    List_5 = []
-    RadioIdList = []
+    ### Storing here all data parsed from all the received envelopes ###
+    GroupID_List = []
+    WiFiDoctorAgentVersion_List = []
+    env_WLANControllerVersion_List = []
     MIMO_BAND = []
+    SSID_RadioID_List = []
+    # -------------------------------------------------------------#
     print("Device ID: " + device_id)
+
+    ### Loop inside envelopes json file and parse info to store them in lists ###
     for envelope_line in x:
         if json_validator(envelope_line):
             loaded_envelope_line = json.loads(envelope_line)
@@ -50,29 +52,28 @@ def ParseEnvelopePlatform(x,device_id):
                 env_groupId = loaded_envelope_line["data"]["groupId"]
                 env_WiFiDoctorAgentVersion = loaded_envelope_line["data"]["WiFiDoctorAgentVersion"]
                 env_WLANControllerVersion = loaded_envelope_line["data"]["WLANControllerVersion"]
-                LIST_1.append(env_groupId)
-                LIST_2.append(env_WiFiDoctorAgentVersion)
-                List_3.append(env_WLANControllerVersion)
+                GroupID_List.append(env_groupId)
+                WiFiDoctorAgentVersion_List.append(env_WiFiDoctorAgentVersion)
+                env_WLANControllerVersion_List.append(env_WLANControllerVersion)
                 
             if (loaded_envelope_line["type"] == "Interface"):
-                interface = loaded_envelope_line["data"]["ssid"]
-                if (interface == "WFD-2G-S2" or interface == "WFD-5G-S2"):
+                interface_ssid = loaded_envelope_line["data"]["ssid"]
+                if (interface_ssid == "WFD-2G-S2" or interface_ssid == "WFD-5G-S2" or interface_ssid == "WFD-6G-S2"):
                     RadioID = loaded_envelope_line["data"]["interfaceId"]["radioId"]["id"]
-                    List_4.append(interface)
-                    RadioIdList.append(RadioID)
+                    SSID_RadioID = interface_ssid, RadioID
+                    SSID_RadioID_List.append(SSID_RadioID)
 
             if (loaded_envelope_line["type"] == "Radio"):
                 MIMO_TX = loaded_envelope_line["data"]["capabilities"]["spatialStreamsTX"]
                 BAND = loaded_envelope_line["data"]["capabilities"]["bands"]
                 BAND_NSS = MIMO_TX , BAND
-                List_5.append(MIMO_TX)
                 MIMO_BAND.append(BAND_NSS)
+    # ------------------------------------------------------------------------------------------------#
 
-
-    print("DEVICE INFO\n###########","\nGroup_ID --> ",LIST_1[-1] ,"\nWiFiDoctorAgentVersion --> ",LIST_2[-1], "\nWLANControllerVersion --> ", List_3[-1])
-    print("\nSSID_1 --> ",List_4[-2], "|| RadioID:",RadioIdList[-2], "\nSSID_2 --> ", List_4[-1] , "|| RadioID:",RadioIdList[-1])
-    #print("\nMIMO_NSS:",List_5)
-    print("\nMIMO BAND NSS --> ",  MIMO_BAND[-1],MIMO_BAND[-2],MIMO_BAND[-3])
+    print("DEVICE INFO\n###########","\nGroup_ID --> ",GroupID_List[-1] ,"\nWiFiDoctorAgentVersion --> ",WiFiDoctorAgentVersion_List[-1], "\nWLANControllerVersion --> ", env_WLANControllerVersion_List[-1])
+    print ("\nSSID, RadioID -- >", SSID_RadioID_List[-1],SSID_RadioID_List[-2],SSID_RadioID_List[-3])
+    print("\nMIMO NSS, BAND --> ",  MIMO_BAND[-1],MIMO_BAND[-2],MIMO_BAND[-3])
+    
         
     
 
