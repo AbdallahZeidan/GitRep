@@ -41,6 +41,7 @@ def ParseEnvelopePlatform(x,device_id):
     env_WLANControllerVersion_List = []
     MIMO_BAND = []
     SSID_RadioID_List = []
+    SSID_InterfaceID_List = []
     # -------------------------------------------------------------#
     print("Device ID: " + device_id)
 
@@ -60,8 +61,13 @@ def ParseEnvelopePlatform(x,device_id):
                 interface_ssid = loaded_envelope_line["data"]["ssid"]
                 if (interface_ssid == "WFD-2G-S2" or interface_ssid == "WFD-5G-S2" or interface_ssid == "WFD-6G-S2"):
                     RadioID = loaded_envelope_line["data"]["interfaceId"]["radioId"]["id"]
+                    InterfaceID = loaded_envelope_line["data"]["interfaceId"]["id"]
+
                     SSID_RadioID = interface_ssid, RadioID
+                    SSID_InterfaceID = interface_ssid, InterfaceID
                     SSID_RadioID_List.append(SSID_RadioID)
+                    SSID_InterfaceID_List.append(SSID_InterfaceID)
+                    
 
             if (loaded_envelope_line["type"] == "Radio"):
                 MIMO_TX = loaded_envelope_line["data"]["capabilities"]["spatialStreamsTX"]
@@ -72,9 +78,10 @@ def ParseEnvelopePlatform(x,device_id):
 
     print("DEVICE INFO\n###########","\nGroup_ID --> ",GroupID_List[-1] ,"\nWiFiDoctorAgentVersion --> ",WiFiDoctorAgentVersion_List[-1], "\nWLANControllerVersion --> ", env_WLANControllerVersion_List[-1])
     print ("\nSSID, RadioID -- >", SSID_RadioID_List[-1],SSID_RadioID_List[-2],SSID_RadioID_List[-3])
+    print("\nSSID, InterfaceID -- >", SSID_InterfaceID_List[-1],SSID_InterfaceID_List[-2],SSID_InterfaceID_List[-3])
     print("\nMIMO NSS, BAND --> ",  MIMO_BAND[-1],MIMO_BAND[-2],MIMO_BAND[-3])
     
-    print(len(SSID_RadioID_List))
+    #print(len(SSID_RadioID_List))
         
     
 
